@@ -21,7 +21,6 @@ for (var i = 0; i <= 10; i++) {
   user.save();
 };
 
-process.exit(0);
 
 function randUser(id, loc) {
   var user = {};

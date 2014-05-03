@@ -27,10 +27,29 @@ function handler (req, res) {
 
 io.sockets.on('connection', function (socket) {
   console.log('connection made');
+
+  // Init > Client
   User.find().populate('location').exec(function(err, users) {
     socket.emit('init', users);
   });
+
+  // Client > Init
   socket.on('init', function(data){
+    console.log('INIT DATA', data);
+    User.findOne({userId: data.userId}, function(err, user){
+      Location.create({
+        user: user,
+        lat: data.lat,
+        lon: data.lon,
+        time: new Date().getTime()
+      }, function(err, loc){
+        if (err) console.log(err);
+        user.update({ location: loc }).exec();
+      });
+    });
+  });
+
+  socket.on('update', function(data){
     console.log('INIT DATA', data);
     User.findOne({userId: data.userId}, function(err, user){
       Location.create({
@@ -44,13 +63,9 @@ io.sockets.on('connection', function (socket) {
       });
 
     });
-    // loc.save( function(err) {
-    //   if (err) console.log(err);
-    //   User.findOneAndUpdate({ userId: data.userId }, { $set: { location: loc } }, function(err, user) {
-    //     console.log('updated user', user);
-    //   });
-    // });
   });
+
+
   socket.on('chat', function(data){
     User.findOne({ userId: data.userId }, 'userName', function(err, user){
       socket.broadcast.emit('chat', { msg: user.userName + " : " + data.msg });
