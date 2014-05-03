@@ -10,8 +10,8 @@
       socket.on('init', function(data){
         console.log('init -> ', data);
       });
-      socket.on('test', function(data){
-        console.log(data);
+      socket.on('update', function(data){
+        console.log('update -> ', data);
       })
 
 
@@ -21,17 +21,26 @@
 
     navigator.geolocation.getCurrentPosition(positionSuccess);
 
+    var coords;
+
     function positionSuccess( pos ){
       var cx = pos.coords;
+      coords = cx;
       console.log(" > init ", pos);
       socket.emit('init', { userId: 1, lat: cx.latitude, lon: cx.longitude });
     }
+
+
 
       $( function() {
         $(document).on('keypress', function(e){
           if (e.keyCode == 13){
             socket.emit('chat', { userId: 1, msg: $('input:first').val() });
           }
+        });
+
+        $('#update').on('click', function(e){
+          socket.emit( 'update', { userId: 1, lat: coords.latitude, lon: coords.longitude })
         });
 
         socket.on('chat', function(data){
@@ -44,7 +53,7 @@
 <body>
 
 
-  <input type="text">
+  <input type="text"><button id="update">Update yo</button>
   <div id="chat">
   </div>
 
