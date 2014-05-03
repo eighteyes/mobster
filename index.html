@@ -28,7 +28,7 @@
 
         socket.on('chat', function(data){
           console.log("chat", data);
-          $('#chat').append( $('<p>', data.msg ));
+          $('#chat').append( $('<p>', {text: data.msg} ));
         });
       })
     </script>

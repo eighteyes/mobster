@@ -37,7 +37,7 @@ function randUser(id, loc) {
   }
 
   user.location = loc._id;
-  user.name = name;
+  user.userName = name;
   user.userId = userId;
   return user;
 }

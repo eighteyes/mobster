@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var userSchema = mongoose.Schema({
-  name: String,
+  userName: String,
   userId: Number,
   location: [{type: mongoose.Schema.Types.ObjectId, ref: 'Location'}]
 });

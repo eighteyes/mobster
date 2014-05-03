@@ -34,11 +34,13 @@ io.sockets.on('connection', function (socket) {
     console.log('INIT DATA', data);
     User.findOne({ userId: data.userId }).populate('location')
     .exec( function (err, user) {
+      user.update({ location: data.location});
+      user.save();
     });
   });
   socket.on('chat', function(data){
-    User.findOne({ userId: data.userId }, 'name', function(err, user){
-      socket.emit('chat', { msg: user.name + " : " + data.msg });
+    User.findOne({ userId: data.userId }, 'userName', function(err, user){
+      socket.emit('chat', { msg: user.userName + " : " + data.msg });
     });
   });
 });
