@@ -9,6 +9,7 @@
       var users;
       var socket = io.connect('107.170.141.208');
       socket.on('init', function(data){
+        console.log(' init ', data)
         users = data;
       });
       socket.on('update', function(data){
@@ -18,12 +19,12 @@
       function randomWalk(){
         users.forEach(function(user, i){
 
-          console.emit("update",)
+          console.emit("update")
         });
       }
 
       function addUser(){
-        users
+        users;
       }
 
 

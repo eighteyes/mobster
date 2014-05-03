@@ -7,7 +7,7 @@ var Location = require('./models/location');
 
 var app = require('http').createServer(handler),
   io = require('socket.io').listen(app),
-  fs = require('fs')
+  fs = require('fs');
 
   app.listen(1337);
 
