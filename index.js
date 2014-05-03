@@ -37,12 +37,13 @@ io.sockets.on('connection', function (socket) {
   socket.on('init', function(data){
     console.log('INIT DATA', data);
     User.findOne({userId: data.userId}, function(err, user){
-      Location.create({
+      var loc = new Location({
         user: user,
         lat: data.lat,
         lon: data.lon,
         time: new Date().getTime()
-      }, function(err, loc){
+      });
+      loc.save( function(err, loc) {
         if (err) console.log(err);
         user.update({ location: loc }).exec();
       });
