@@ -7,7 +7,6 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
     <script>
       var socket = io.connect('http://localhost');
-      socket.emit('init', { userId: 1, lat: 45, lon: 35 });
       socket.on('init', function(data){
         console.log('init -> ', data);
       });
@@ -19,12 +18,20 @@
     </script>
 
     <script>
+
+    navigator.geolocation.getCurrentPosition(positionSuccess);
+
+    function positionSuccess( pos ){
+      var cx = pos.coords;
+      socket.emit('init', { userId: 1, lat: cx.latitude, lon: cx.longitude });
+    }
+
       $( function() {
         $(document).on('keypress', function(e){
           if (e.keyCode == 13){
             socket.emit('chat', { userId: 1, msg: $('input:first').val() });
           }
-        })
+        });
 
         socket.on('chat', function(data){
           console.log("chat", data);
