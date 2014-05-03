@@ -36,6 +36,11 @@ io.sockets.on('connection', function (socket) {
     .exec( function (err, user) {
     });
   });
+  socket.on('chat', function(data){
+    User.findOne({ userId: data.userId }, 'name', function(err, user){
+      socket.emit('chat', { msg: user.name + " : " + data.msg });
+    });
+  });
 });
 
 function makeInit(){

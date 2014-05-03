@@ -12,14 +12,18 @@ var users = [];
 var locations = [];
 
 var location = new Location( randLoc() );
-var user = new User( randUser(location) );
 
-location.save();
-user.save();
+for (var i = 0; i <= 10; i++) {
+  var user = new User( randUser(i, location) );
+  user.save();
+  location.save();
+};
+
+
 console.log(location, user);
 
 
-function randUser(loc) {
+function randUser(id, loc) {
   var user = {};
   var name = userId = "";
 
@@ -29,7 +33,7 @@ function randUser(loc) {
 
   for (var i = 0; i < 1; i++) {
     // userId += Math.ceil(Math.random() * 10).toString(10);
-    userId = 1;
+    userId = id;
   }
 
   user.location = loc._id;
