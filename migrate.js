@@ -1,30 +1,21 @@
 var mongoose = require('mongoose');
+
+
 mongoose.connect('mongodb://localhost/mobster');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
-  console.log("hi from mongo");
 
-var userSchema = mongoose.Schema({
-  name: String,
-  userId: String,
-  location: mongoose.Schema.Types.ObjectId
-});
-
-var locSchema = mongoose.Schema({
-  lon: Number,
-  lat: Number,
-  time: Number
-})
-var User = mongoose.model('User', userSchema );
-
-var Location = mongoose.model('Location', locSchema);
-
+var User = require('./models/user');
+var Location = require('./models/location');
 var users = [];
 var locations = [];
 
 var location = new Location( randLoc() );
 var user = new User( randUser(location) );
+
+location.save();
+user.save();
 console.log(location, user);
 
 
@@ -36,8 +27,9 @@ function randUser(loc) {
     name += Math.ceil(Math.random() * 36).toString(36);
   }
 
-  for (var i = 0; i < 8; i++) {
-    userId += Math.ceil(Math.random() * 10).toString(10);
+  for (var i = 0; i < 1; i++) {
+    // userId += Math.ceil(Math.random() * 10).toString(10);
+    userId = 1;
   }
 
   user.location = loc._id;
