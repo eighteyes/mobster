@@ -5,13 +5,13 @@
   "main": "index.js",
   "dependencies": {
     "socket.io": "^0.9.16",
-    "mongoose": "^3.8.8"
+    "mongoose": "^3.8.8",
+    "lodash": "^2.4.1"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "sudo nodev index.js"
-
   },
   "repository": {
     "type": "git",

@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/mobster');
 
@@ -26,27 +27,17 @@ function handler (req, res) {
 
 io.sockets.on('connection', function (socket) {
   console.log('connection made');
-  var updatePayload = doUpdate();
-  socket.emit('update', { hi: 'yair'});
-
+  User.find().populate('location').exec(function(err, users) {
+    socket.emit('init', users);
+  });
   socket.on('init', function(data){
     console.log('INIT DATA', data);
     User.findOne({ userId: data.userId }).populate('location')
     .exec( function (err, user) {
-      console.log(user);
-      socket.emit('init', user);
     });
-  });
-  socket.on('test', function (data) {
-    console.log('test', data);
-    socket.emit('test', {location: {
-        lat: 35,
-        lon: -45,
-        time: new Date()
-    }});
   });
 });
 
-function doUpdate(){
-
+function makeInit(){
+  var payload = {};
 }
