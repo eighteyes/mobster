@@ -28,7 +28,7 @@ function handler(req, res) {
 io.sockets.on('connection', function(socket) {
   console.log('connection made');
 
-  // Init > Client
+  // Init > Client - Send all users
   User.find().populate('location').exec(function(err, users) {
     socket.emit('init', users);
   });
@@ -42,6 +42,7 @@ io.sockets.on('connection', function(socket) {
   socket.on('update', function(data) {
     console.log('UPDATE DATA', data);
     updateUserLoc(data);
+    socket.broadcast.emit('update', data);
   });
 
   socket.on('chat', function(data) {
@@ -62,6 +63,9 @@ function updateUserLoc(data) {
   User.findOne({
     userId: data.userId
   }, function(err, user) {
+    if ( user == null ){
+      user = new User({ userId: data.userId, userName: data.userName || "testUser" });
+    }
     var loc = new Location({
       user: user,
       lat: data.lat,
@@ -70,9 +74,8 @@ function updateUserLoc(data) {
     });
     loc.save(function(err, loc) {
       if (err) console.log(err);
-      user.update({
-        location: loc
-      }).exec();
+      user.location = loc;
+      user.save();
     });
   });
 }
