@@ -63,7 +63,7 @@ function updateUserLoc(data) {
   User.findOne({
     userId: data.userId
   }, function(err, user) {
-    if ( user == null ){
+    if ( user === null ){
       user = new User({ userId: data.userId, userName: data.userName || "testUser" });
     }
     var loc = new Location({

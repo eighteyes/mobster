@@ -6,13 +6,25 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
     <script>
-      var socket = io.connect('http://localhost');
+      var users;
+      var socket = io.connect('localhost');
       socket.on('init', function(data){
-        console.log('init -> ', data);
+        users = data;
       });
       socket.on('update', function(data){
         console.log('update -> ', data);
-      })
+      });
+
+      function randomWalk(){
+        users.forEach(function(user, i){
+
+          console.emit("update",)
+        });
+      }
+
+      function addUser(){
+        users
+      }
 
 
     </script>

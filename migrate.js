@@ -42,8 +42,9 @@ function randUser(id, loc) {
 }
 
 function randLoc() {
-  var lat = 25 + Math.random() - 0.5;
-  var lon = -80 + Math.random() - 0.5;
+  //25.794709, -80.206637
+  var lat = 25.794 + Math.random() - 0.005;
+  var lon = -80.206 + Math.random() - 0.005;
   var time = new Date().getTime() + Math.round(Math.random() * 1000);
   return {
     lat: lat,
