@@ -23,6 +23,7 @@
 
     function positionSuccess( pos ){
       var cx = pos.coords;
+      console.log(" > init ", pos);
       socket.emit('init', { userId: 1, lat: cx.latitude, lon: cx.longitude });
     }
 
