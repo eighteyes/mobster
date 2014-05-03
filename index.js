@@ -32,11 +32,11 @@ io.sockets.on('connection', function (socket) {
   });
   socket.on('init', function(data){
     console.log('INIT DATA', data);
-    User.findOne({ userId: data.userId }).populate('location')
-    .exec( function (err, user) {
-      user.update({ location: data.location});
-      user.save();
-    });
+    var loc = new Location({ location: data.location });
+    loc.save();
+    User.findOneAndUpdate({ userId: data.userId }, { $set: { location: loc } }, function(err, user) {
+      console.log('updated user', user);
+    } );
   });
   socket.on('chat', function(data){
     User.findOne({ userId: data.userId }, 'userName', function(err, user){

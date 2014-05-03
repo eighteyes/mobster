@@ -11,17 +11,17 @@ var Location = require('./models/location');
 var users = [];
 var locations = [];
 
-var location = new Location( randLoc() );
+
 
 for (var i = 0; i <= 10; i++) {
+  var location = new Location( randLoc() );
+  location.save();
+
   var user = new User( randUser(i, location) );
   user.save();
-  location.save();
 };
 
-
-console.log(location, user);
-
+process.exit(0);
 
 function randUser(id, loc) {
   var user = {};
@@ -43,8 +43,8 @@ function randUser(id, loc) {
 }
 
 function randLoc() {
-  var lat = 35 + Math.random() - 0.5;
-  var lon = 45 + Math.random() - 0.5;
+  var lat = 25 + Math.random() - 0.5;
+  var lon = -80 + Math.random() - 0.5;
   var time = new Date().getTime() + Math.round(Math.random() * 1000);
   return {
     lat: lat,
