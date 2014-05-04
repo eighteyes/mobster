@@ -1,0 +1,173 @@
+//Vars
+
+$cloud: rgb(240, 240, 240)
+
+//imports
+
+@import "_bootstrap"
+@import "_pushmenu"
+
+
+//sections
+
+body
+  background: $cloud
+  color: rgb(40, 40, 40)
+  padding-top: 70px
+
+.chat-container
+  background: white
+  position: absolute
+  height: 25%
+  width: 35%
+  overflow-y: hidden
+  bottom: 0
+  margin-left: 50px
+  @include translate(-9%, -18%)
+  #chat
+    height: 80%
+    padding: 10px
+.navbar-mob
+  background-color: rgb(240, 240, 240)
+  border: none
+  font-weight: 200
+  .navbar-header
+    @extend .navbar-header
+    float: none
+    margin: -15 0
+    min-width: 336px
+  .navbar-brand
+    margin-left: 15px
+    color: #000000
+    img
+      height: 50px
+  .navbar-toggle
+    display: block !important
+    float: right
+    border: none
+    margin-top: 18px
+    &:hover, &:active, &:focus
+      background-color: transparent
+    //transform: rotate(90deg)
+    //transition: all 1s
+    //-webkit-transform: rotate(90deg)
+    //-webkit-transition: all 1s
+    .icon-bar
+      background: black
+      height: 4px
+
+  .navbar-nav
+    li
+      a
+        color: black
+        &:hover, &:focus, &:active, .active
+          font-weight: bold
+
+button.flash
+  font-size: 20px
+  float: right
+  position: relative
+  padding: 12px
+  margin: 4px
+  background-color: transparent
+  background-image: none
+  border: 1px solid transparent
+  border-radius: 4px
+  &:focus
+    outline: none
+  &.glyphicon
+    display: block
+    width: 22px
+    height: 2px
+    border-radius: 1px
+
+%cover
+  min-height: 100vh
+  width: 100%
+  background-position: center center
+  background-attachment: fixed
+  background-repeat: no-repeat
+  -webkit-background-size: cover
+  -moz-background-size: cover
+  -o-background-size: cover
+  background-size: cover
+
+
+@each $type in 'user', 'tasks', 'activities'
+  section.#{$type}
+    margin-top: 1.5em
+
+section:first-of-type
+  margin-top: 0
+
+.activity
+  @include make-lg-column(4)
+
+.session-container
+  @include make-lg-column(6)
+  @include make-lg-column-push(3)
+  @include make-md-column(6)
+  @include make-md-column-push(3)
+
+.col-6
+  @include make-lg-column(6)
+  @include make-md-column(6)
+  @include make-sm-column(6)
+  @include make-xs-column(6)
+
+
+.btn-ss
+  @extend .btn-primary
+
+.btn-xl
+  @extend .btn-lg
+
+
+
+
+//centering the unknown by Chris Coyier
+
+.block
+  text-align: center
+  height: 300px
+
+.block:before
+  content: ''
+  display: inline-block
+  height: 100%
+  vertical-align: middle
+  margin-right: -0.25em
+  width: 1px
+
+.centered
+  display: inline-block
+  vertical-align: middle
+  max-width: 99%
+
+//Utilities
+
+//Animations
+
+.slideOut
+  @include animation(slideOut 2s)
+
+@keyframes slideOut
+  from
+    left: 0px
+    opacity: 1
+  to
+    left: 500px
+    opacity: 0
+    display: none
+
+@-webkit-keyframes slideOut
+  from
+    //left: 0px
+    opacity: 1
+    @include translate(0, 0)
+  to
+    //left: 500px
+    opacity: 0
+    display: none
+    @include translate(100%, 0)
+

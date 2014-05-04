@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="menu-push" style="font-weight: 300">
+
+
+<!--Navigation-->
+<nav class="navbar navbar-mob navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-mob-header">
+
+      <a class="navbar-brand" href="#">
+        <img src="imgs/m.svg" alt=""/>
+      </a>
+
+      <button type="button" class="navbar-toggle">
+        <!--data-target="#bs-example-navbar-collapse-1"-->
+        <span class="sr-only">Menu Button</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+  <div id="map-canvas" style="width: 100%; height: 88vh;"></div>
+
+  <div class="container">
+
+    <div class="chat-container img-rounded">
+      <div id="chat">
+      </div>
+      <div class="input-group">
+        <input id="msg" type="text" placeholder="msg" class="form-control">
+        <a class="btn btn-default input-group-addon">send</a>
+      </div>
+    </div>
+
+    <div class=" hidden row">
+      <div class="col-sm-12">
+        <button class="btn btn-default btn-block test">Test Stuff</button>
+        <button class="hidden btn btn-default btn-block event">Fire</button>
+        <button class="btn-dfrag btn-block pingbtn">Resonance</button>
+        <button class="btn-dfrag btn-block testbtn">Drop Marker</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+      </div>
+    </div>
+  </div>
+
+  <script src="socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
+  <!--<script type="text/javascript" src="js/md5.min.js"></script>-->
+  <script type="text/javascript" src="js/googlemaps.js?key=AIzaSyCwMPYWQv-RasZnNTRJJwrzMWHZWQpW4E0&sensor=true">
+  </script>
+  <script type="text/javascript" src="js/mapstyle.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+<script>
+  var users;
+  var socket = io.connect('107.170.141.208');
+  socket.on('init', function(data){
+    console.log(' init ', data)
+    users = data;
+  });
+  socket.on('update', function(data){
+    console.log('update -> ', data);
+  });
+
+  socket.on('newUser', function(data){
+    console.log('NewUser', data);
+  })
+
+  var walk;
+
+
+  function stopWalk(){
+    window.clearInterval(walk);
+  }
+
+  function startWalk(){
+    walk = window.setInterval( randomWalk, 500 );
+  }
+
+  var interval = 0;
+  var userMax = 100;
+
+  function randomWalk(){
+
+    var num = Math.ceil(Math.random()*5);
+    for ( var i = interval; i < interval + num; i++ ){
+      var user = users[i];
+      user.location[0].lat += Math.random()/1000 - 0.0005;
+      user.location[0].lon += Math.random()/1000 - 0.0005;
+      users[i] = user;
+      // socket.emit("update", {
+      //   userId: user.userId,
+      //   lat: user.location[0].lat,
+      //   lon: user.location[0].lon
+      // });
+    }
+    userMax += 1;
+    socket.emit("update", {
+      userId: userMax,
+      userName:"Newbie",
+      lat: users[0].location[0].lat,
+      lon: users[0].location[0].lon
+    });
+
+    if (interval > 90){
+      interval = 0;
+    } else {
+      interval += num;
+    }
+    console.log("walked", interval);
+  }
+
+  var userMax = 1000;
+  function addUser(){
+    userMax += 1;
+    socket.emit("update", {
+      userId: userMax,
+      userName:"Newbie",
+      lat: users[0].location[0].lat,
+      lon: users[0].location[0].lon
+    });
+  }
+
+
+</script>
+
+
+</body>
+</html>
