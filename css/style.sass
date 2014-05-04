@@ -12,38 +12,36 @@ $cloud: rgb(240, 240, 240)
 
 body
   background: $cloud
-  color: rgb(40, 40, 40)
   padding-top: 70px
 
-.navbar-ss
-  background-color: rgb(240, 240, 240)
+.navbar-mob
+  background-color: rgba(255, 255, 255, 0)
   border: none
   font-weight: 200
   .navbar-brand
-    padding: 3px 15px
     color: #000000
-    img
-      height: 50px
+    > img
+      height: 47px
+      display: inline
+    white-space: nowrap
+    font-weight: 600
+
+  .navbar-header
+    @extend .navbar-header
+    float: none
+    margin: -15 0
+    min-width: 336px
   .navbar-toggle
     border: none
-    &:hover, &:active, &:focus
+    float: right
+    display: block !important
+    &.active
       background-color: transparent
-    //transform: rotate(90deg)
-    //transition: all 1s
-    //-webkit-transform: rotate(90deg)
-    //-webkit-transition: all 1s
+      @include rotate(90deg)
+      @include transition(all, 1s)
     .icon-bar
       background-color: black
       height: 4px
-
-  .navbar-nav
-    li
-      a
-        color: black
-        &:hover, &:focus, &:active, .active
-          font-weight: bold
-
-
 
 button.flash
   font-size: 20px
