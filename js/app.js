@@ -90,10 +90,11 @@
 
   $('#msg').keypress(function(e) {
     if (e.which === 13) {
-      return socket.emit('chat', {
+      socket.emit('chat', {
         userId: user.userId,
         msg: $('#msg').val()
       });
+      return $('#msg').val('');
     }
   });
 

@@ -103,6 +103,7 @@ $('#msg').keypress (e)->
     socket.emit 'chat',
       userId: user.userId
       msg: $('#msg').val()
+    $('#msg').val('')
 
 socket.on 'chat', (data)->
   console.log("chat", data)

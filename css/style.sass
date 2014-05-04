@@ -15,28 +15,29 @@ body
   color: rgb(40, 40, 40)
   padding-top: 70px
 
-.container
-  position: absolute
-  bottom: 0
-  left: 0
-  height: 100vh
-  width: 100%
-
 .chat-container
   background: white
   position: absolute
   height: 25%
   width: 35%
   overflow-y: hidden
-  /* bottom: 35px; */
-  @include translate(13%, 278%)
+  bottom: 0
+  margin-left: 50px
+  @include translate(-9%, -18%)
   #chat
     height: 80%
+    padding: 10px
 .navbar-mob
   background-color: rgb(240, 240, 240)
   border: none
   font-weight: 200
+  .navbar-header
+    @extend .navbar-header
+    float: none
+    margin: -15 0
+    min-width: 336px
   .navbar-brand
+    margin-left: 15px
     color: #000000
     img
       height: 50px
@@ -44,6 +45,7 @@ body
     display: block !important
     float: right
     border: none
+    margin-top: 18px
     &:hover, &:active, &:focus
       background-color: transparent
     //transform: rotate(90deg)
