@@ -7,6 +7,31 @@
 
 map = {}
 @coordinates = {}
+@user = {}
+
+# Geolocation
+navigator.geolocation.getCurrentPosition (data) =>
+  @coordinates = data.coords
+  console.log(
+    "Accuracy: " + @coordinates.accuracy
+    "Altitude: " + @coordinates.altitude
+    "Altitude Accuracy: " + @coordinates.altitudeAccuracy
+    "Heading: " + @coordinates.heading
+    "Latitude: " + @coordinates.latitude
+    "Longitude: " + @coordinates.longitude
+    "Speed: " + @coordinates.speed)
+
+  userId = 12
+
+  @user = {
+    userId: userId,
+    userName: "testUser",
+    lon: @coordinates.longitude - 2,
+    lat: @coordinates.latitude - 2
+  }
+
+  # Init
+  socket.emit('init', { userId: @user.userId, lat: @coordinates.latitude, lon: @coordinates.longitude })
 
 # Start Maps
 
@@ -40,11 +65,11 @@ map = {}
       animation: google.maps.Animation.DROP,
       map: map)
 
-  #Resize Listener
-  google.maps.event.addDomListener window, "resize", ->
-    center = map.getCenter()
-    google.maps.event.trigger map, "resize"
-    map.setCenter @myLatlng
+#Resize Listener
+google.maps.event.addDomListener window, "resize", ->
+  center = map.getCenter()
+  google.maps.event.trigger map, "resize"
+  map.setCenter @myLatlng
 
 $(document).ready => @googlemaps()
 
@@ -70,21 +95,12 @@ $('.testbtn').click ()->
   Socket.io
 ###
 
-socket = io.connect('http://localhost')
+socket = io.connect('107.170.141.208')
 
 #navigator.geolocation.getCurrentPosition (data) =>
 #  window.pos = data.coords
 
 # New User
-
-userId = Math.floor(Math.random() * (199 - 100 + 1)) + 100
-
-user = {
-  userId: userId,
-  userName: "testUser",
-  lon: coordinates.longitude - 2,
-  lat: coordinates.latitude - 2
-}
 
 socket.emit("update", user)
 
@@ -104,6 +120,8 @@ $('#msg').keypress (e)->
       userName: 'webUser'
       msg: $('#msg').val()
     $('#msg').val('')
+#    if $('#chat p').length >= 4
+#      $('#chat p').first().remove()
 
 socket.on 'chat', (data)->
   console.log("chat", data)
@@ -116,7 +134,6 @@ $('#update').click ()->
     position: new google.maps.LatLng(coordinates.latitude - 0.01, coordinates.longitude - 0.01)
     animation: google.maps.Animation.DROP,
     map: map
-    title: "Test Player"
   )
 
 # Update
@@ -131,12 +148,9 @@ socket.on 'update', (data)->
   )
 
 
-# Init
-socket.emit('init', { userId: user.userId, lat: coordinates.latitude, lon: coordinates.longitude })
-
 i = 0
 socket.on 'init', (data)->
-  data = users
+  users = data
   while i < users.length
     users[i]
     users[i].location[0].lat
