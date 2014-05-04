@@ -32,6 +32,8 @@ navigator.geolocation.getCurrentPosition (data) =>
   console.log("user", @user)
   # Init
   socket.emit('init', @user)
+  socket.emit('update', @user)
+
 
 # Start Maps
 
@@ -102,8 +104,6 @@ socket = io.connect('107.170.141.208')
 
 # New User
 
-socket.emit("update", user)
-
 socket.on 'newUser', (data)->
   console.log('NewUser', data)
   console.log data.lat, data.lon
@@ -120,7 +120,7 @@ $('#msg').keypress (e)->
       userName: 'webUser'
       msg: $('#msg').val()
     $('#msg').val('')
-    $('#chat p').last().focus()
+    $('#chat p').last().offset().top
 
 socket.on 'chat', (data)->
   console.log("chat", data)

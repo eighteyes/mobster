@@ -21,7 +21,8 @@
         lat: _this.coordinates.latitude
       };
       console.log("user", _this.user);
-      return socket.emit('init', _this.user);
+      socket.emit('init', _this.user);
+      return socket.emit('update', _this.user);
     };
   })(this));
 
@@ -86,8 +87,6 @@
 
   socket = io.connect('107.170.141.208');
 
-  socket.emit("update", user);
-
   socket.on('newUser', function(data) {
     var latlng;
     console.log('NewUser', data);
@@ -106,7 +105,7 @@
         msg: $('#msg').val()
       });
       $('#msg').val('');
-      return $('#chat p').last().focus();
+      return $('#chat p').last().offset().top;
     }
   });
 
