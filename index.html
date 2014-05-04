@@ -42,11 +42,11 @@
           user.location[0].lat += Math.random()/1000 - 0.0005;
           user.location[0].lon += Math.random()/1000 - 0.0005;
           users[i] = user;
-          socket.emit("update", {
-            userId: user.userId,
-            lat: user.location[0].lat,
-            lon: user.location[0].lon
-          });
+          // socket.emit("update", {
+          //   userId: user.userId,
+          //   lat: user.location[0].lat,
+          //   lon: user.location[0].lon
+          // });
         }
           userMax += 1;
           socket.emit("update", {

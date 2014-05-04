@@ -54,12 +54,13 @@ io.sockets.on('connection', function(socket) {
 
 
 function updateUserLoc(data) {
+  var newUser = false;
   User.findOne({
     userId: data.userId
   }, function(err, user) {
     if ( user === null ){
       user = new User({ userId: data.userId, userName: data.userName || "testUser" });
-      socket.broadcast.emit('newUser', user);
+      newUser = true;
     }
     var loc = new Location({
       user: user,
@@ -69,9 +70,10 @@ function updateUserLoc(data) {
     });
     loc.save(function(err, loc) {
       if (err) console.log(err);
-      user.location = loc;
-      user.save();
-
+      user.location = [loc];
+      user.save( function(err, user) {
+        if (newUser) socket.broadcast.emit('newUser', user);
+      });
     });
   });
 }
