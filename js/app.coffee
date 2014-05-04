@@ -7,6 +7,31 @@
 
 map = {}
 @coordinates = {}
+@user = {}
+
+# Geolocation
+navigator.geolocation.getCurrentPosition (data) =>
+  @coordinates = data.coords
+  console.log(
+    "Accuracy: " + @coordinates.accuracy
+    "Altitude: " + @coordinates.altitude
+    "Altitude Accuracy: " + @coordinates.altitudeAccuracy
+    "Heading: " + @coordinates.heading
+    "Latitude: " + @coordinates.latitude
+    "Longitude: " + @coordinates.longitude
+    "Speed: " + @coordinates.speed)
+
+  userId = 12
+
+  @user = {
+    userId: userId,
+    userName: "webUser",
+    lon: @coordinates.longitude,
+    lat: @coordinates.latitude
+  }
+  console.log("user", @user)
+  # Init
+  socket.emit('init', @user)
 
 # Start Maps
 
@@ -40,11 +65,11 @@ map = {}
       animation: google.maps.Animation.DROP,
       map: map)
 
-  #Resize Listener
-  google.maps.event.addDomListener window, "resize", ->
-    center = map.getCenter()
-    google.maps.event.trigger map, "resize"
-    map.setCenter @myLatlng
+#Resize Listener
+google.maps.event.addDomListener window, "resize", ->
+  center = map.getCenter()
+  google.maps.event.trigger map, "resize"
+  map.setCenter @myLatlng
 
 $(document).ready => @googlemaps()
 
@@ -77,15 +102,6 @@ socket = io.connect('107.170.141.208')
 
 # New User
 
-userId = 12
-
-user = {
-  userId: userId,
-  userName: "testUser",
-  lon: coordinates.longitude - 2,
-  lat: coordinates.latitude - 2
-}
-
 socket.emit("update", user)
 
 socket.on 'newUser', (data)->
@@ -104,6 +120,7 @@ $('#msg').keypress (e)->
       userName: 'webUser'
       msg: $('#msg').val()
     $('#msg').val('')
+    $('#chat p').last().focus()
 
 socket.on 'chat', (data)->
   console.log("chat", data)
@@ -116,7 +133,6 @@ $('#update').click ()->
     position: new google.maps.LatLng(coordinates.latitude - 0.01, coordinates.longitude - 0.01)
     animation: google.maps.Animation.DROP,
     map: map
-    title: "Test Player"
   )
 
 # Update
@@ -131,12 +147,9 @@ socket.on 'update', (data)->
   )
 
 
-# Init
-socket.emit('init', { userId: user.userId, lat: coordinates.latitude, lon: coordinates.longitude })
-
 i = 0
 socket.on 'init', (data)->
-  data = users
+  users = data
   while i < users.length
     users[i]
     users[i].location[0].lat

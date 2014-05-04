@@ -5088,7 +5088,8 @@ body {
   transform: translate(-9%, -18%); }
   .chat-container #chat {
     height: 80%;
-    padding: 10px; }
+    padding: 10px;
+    overflow-y: scroll; }
 
 .navbar-mob {
   background-color: #f0f0f0;
