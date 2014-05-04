@@ -5,25 +5,19 @@ mongoose.connect('mongodb://localhost/mobster');
 var User = require('./models/user');
 var Location = require('./models/location');
 
-var app = require('http').createServer(handler),
-  io = require('socket.io').listen(app),
-  fs = require('fs');
+var express = require('express');
+var app = express()
+  , server = require('http').createServer(app)
+  , io = require('socket.io').listen(server);
 
-  app.listen(1337);
+server.listen(1337);
 
+app.get('/', function (req, res) {
+  res.sendfile(__dirname + '/index.html');
+});
 
-function handler(req, res) {
-  fs.readFile(__dirname + '/index.html',
-    function(err, data) {
-      if (err) {
-        res.writeHead(500);
-        return res.end('Error loading index.html');
-      }
+app.use(express.static(__dirname));
 
-      res.writeHead(200);
-      res.end(data);
-    });
-}
 
 io.sockets.on('connection', function(socket) {
   console.log('connection made');
@@ -65,6 +59,7 @@ function updateUserLoc(data) {
   }, function(err, user) {
     if ( user === null ){
       user = new User({ userId: data.userId, userName: data.userName || "testUser" });
+      socket.broadcast.emit('newUser', user);
     }
     var loc = new Location({
       user: user,
@@ -76,6 +71,7 @@ function updateUserLoc(data) {
       if (err) console.log(err);
       user.location = loc;
       user.save();
+
     });
   });
 }
