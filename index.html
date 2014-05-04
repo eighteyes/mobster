@@ -28,11 +28,16 @@
       }
 
       function startWalk(){
-        walk = window.setInterval( randomWalk, 2500 );
+        walk = window.setInterval( randomWalk, 500 );
       }
 
+      var interval = 0;
+      var userMax = 100;
+
       function randomWalk(){
-        for ( i = 0; i < users.length; i++ ){
+
+        var num = Math.ceil(Math.random()*5);
+        for ( var i = interval; i < interval + num; i++ ){
           var user = users[i];
           user.location[0].lat += Math.random()/1000 - 0.0005;
           user.location[0].lon += Math.random()/1000 - 0.0005;
@@ -43,11 +48,24 @@
             lon: user.location[0].lon
           });
         }
-        return "Walked";
+          userMax += 1;
+          socket.emit("update", {
+            userId: userMax,
+            userName:"Newbie",
+            lat: users[0].location[0].lat,
+            lon: users[0].location[0].lon
+          });
+
+        if (interval > 90){
+          interval = 0;
+        } else {
+          interval += num;
+        }
+        console.log("walked", interval);
       }
 
       function addUser(){
-        users;
+
       }
 
 

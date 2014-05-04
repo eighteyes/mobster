@@ -51,7 +51,7 @@ io.sockets.on('connection', function(socket) {
       });
     });
   });
-});
+
 
 function updateUserLoc(data) {
   User.findOne({
@@ -75,3 +75,4 @@ function updateUserLoc(data) {
     });
   });
 }
+});
