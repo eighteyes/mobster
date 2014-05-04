@@ -55,7 +55,7 @@ function updateUserLoc(data) {
     userId: data.userId
   }, function(err, user) {
     if ( user === null ){
-      user = new User({ userId: data.userId, userName: data.userName || "testUser" });
+      user = new User({ userId: data.userId, userName: data.userName || "testNewUser" });
       newUser = true;
     }
     var loc = new Location({
@@ -70,7 +70,7 @@ function updateUserLoc(data) {
       console.log('UserUpdate', user);
       user.save( function(err) {
         if (newUser) socket.broadcast.emit('newUser', {
-         userId: data.userId, userName: data.userName || "testUser",
+         userId: data.userId, userName: data.userName || "testNewUser",
          lat: data.lat, lon: data.lon });
       });
     });
