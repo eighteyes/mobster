@@ -1,6 +1,7 @@
-# DFRAG v0.2
-# by Chris Scott(@CyberStrike)
-# Initial build during Global Game Jam 2014
+# Mobster
+# Sean Canton (@SeanCanton)
+# Chris Scott(@CyberStrike)
+# Emerge Hack 2014
 
 ## Google Map Init
 
@@ -10,7 +11,6 @@ map = {}
 # Start Maps
 
 @googlemaps = ->
-
   console.log 'hello'
 
   # Geolocation
@@ -48,7 +48,6 @@ map = {}
 
 $(document).ready => @googlemaps()
 
-
 $('.testbtn').click =>
 
   contentString =
@@ -68,12 +67,50 @@ $('.testbtn').click =>
     console.log marker
     infowindow.open map, marker
 
-# Push
-#
-#@key = 'ab3c98158c6fe5aeb9cd'
-#secret = 'e8e70748d47475f9b50d'
-#app_id = '61730'
-#
+###
+  Socket.io
+###
+
+socket = io.connect('http://localhost')
+
+# New User
+
+userId = Math.floor(Math.random() * (199 - 100 + 1)) + 100
+
+user =
+  userId: userId
+  userName: "testUser"
+  lat: @coordinates.latitude
+  lon: @coordinates.longitude
+
+socket.emit("update", user)
+
+socket.on 'newUser', (data)->
+  console.log('NewUser', data)
+  console.log data.lat, data.lon
+  latlng = new google.maps.LatLng(data.lat, data.lon)
+  @player2 = new google.maps.Marker(
+    position: latlng,
+    map: map
+  )
+
+$('#msg').keydown (e)->
+  if e.which = 13
+    socket.emit 'chat',
+      userId: user.userId
+      msg: $('#msg').val()
+
+$('#update').on 'click',
+  (e)-> socket.emit( 'update', user)
+
+socket.on 'chat', (data)->
+  console.log("chat", data)
+  $('#chat').append($('<p>', {text: data.msg}))
+
+# Init
+socket.emit('init', { userId: user.userId, lat: @coordinates.latitude, lon: @coordinates.longitude })
+
+
 #Pusher.log = (message) ->
 #  window.console.log message  if window.console and window.console.log
 #
@@ -93,13 +130,7 @@ $('.testbtn').click =>
 #  console.log "Location Listening"
 #  updateloc()
 #
-#channel.bind "client-geo", (data) ->
-#  console.log data.latitude, data.longitude
-#  latlng = new google.maps.LatLng(data.latitude, data.longitude)
-#  @player2 = new google.maps.Marker(
-#    position: latlng,
-#    map: map
-#  )
+
 #
 #$pingbtn = $('.pingbtn')
 #$pingbtn.click ->
@@ -107,12 +138,6 @@ $('.testbtn').click =>
 #
 #channel.bind "client-ping", (data) ->
 #  updateloc()
-
-@msg = 'message':'test'
-
-$event = $('.event')
-$event.click ->
-  channel.trigger('client-geo', coordinates)
 
 #
 #//@ sourceMappingURL=app.map

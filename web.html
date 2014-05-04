@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
@@ -31,9 +31,10 @@
 
   <div class="container">
 
-    <input type="text"><button id="update">Update yo</button>
-    <div id="chat">
-    </div>
+      <input id="msg" type="text" placeholder="msg">
+      <button type="button" id="update">Update yo</button>
+      <div id="chat">
+      </div>
 
     <div class="row">
       <div class="col-sm-12">
@@ -50,71 +51,83 @@
     </div>
   </div>
 
+  <script src="socket.io/socket.io.js"></script>
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
-  <script type="text/javascript" src="js/md5.min.js"></script>
+  <!--<script type="text/javascript" src="js/md5.min.js"></script>-->
   <script type="text/javascript" src="js/googlemaps.js?key=AIzaSyCwMPYWQv-RasZnNTRJJwrzMWHZWQpW4E0&sensor=true">
   </script>
   <script type="text/javascript" src="js/mapstyle.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
-  <script type="text/javascript" src="socket.io/socket.io.js"></script>
-  <script>
-    var socket = io.connect('http://localhost');
-    socket.on('init', function(data){
-      console.log('init -> ', data);
+<script>
+  var users;
+  var socket = io.connect('107.170.141.208');
+  socket.on('init', function(data){
+    console.log(' init ', data)
+    users = data;
+  });
+  socket.on('update', function(data){
+    console.log('update -> ', data);
+  });
+
+  socket.on('newUser', function(data){
+    console.log('NewUser', data);
+  })
+
+  var walk;
+
+
+  function stopWalk(){
+    window.clearInterval(walk);
+  }
+
+  function startWalk(){
+    walk = window.setInterval( randomWalk, 500 );
+  }
+
+  var interval = 0;
+  var userMax = 100;
+
+  function randomWalk(){
+
+    var num = Math.ceil(Math.random()*5);
+    for ( var i = interval; i < interval + num; i++ ){
+      var user = users[i];
+      user.location[0].lat += Math.random()/1000 - 0.0005;
+      user.location[0].lon += Math.random()/1000 - 0.0005;
+      users[i] = user;
+      // socket.emit("update", {
+      //   userId: user.userId,
+      //   lat: user.location[0].lat,
+      //   lon: user.location[0].lon
+      // });
+    }
+    userMax += 1;
+    socket.emit("update", {
+      userId: userMax,
+      userName:"Newbie",
+      lat: users[0].location[0].lat,
+      lon: users[0].location[0].lon
     });
-    socket.on('update', function(data){
-      console.log('update -> ', data);
-    })
 
-    function randomWalk(){
-      for ( i = 0; i < users.length; i++ ){
-        var user = users[i];
-        user.location[0].lat += Math.random()/1000 - 0.0005;
-        user.location[0].lon += Math.random()/1000 - 0.0005;
-        users[i] = user;
-        socket.emit("update", {
-          userId: user.userId,
-          lat: user.location[0].lat,
-          lon: user.location[0].lon
-        });
-      }
+    if (interval > 90){
+      interval = 0;
+    } else {
+      interval += num;
     }
+    console.log("walked", interval);
+  }
 
-    function addUser(){
-//      users;
-    }
-
-    navigator.geolocation.getCurrentPosition(positionSuccess);
-
-    var coords;
-
-    function positionSuccess( pos ){
-      var cx = pos.coords;
-      coords = cx;
-      console.log(" > init ", pos);
-      socket.emit('init', { userId: 12, lat: cx.latitude, lon: cx.longitude });
-    }
-
-    $( function() {
-      $(document).on('keypress', function(e){
-        if (e.keyCode == 13){
-          socket.emit('chat', { userId: 12, msg: $('input:first').val() });
-        }
-      });
-
-      $('#update').on('click', function(e){
-        socket.emit( 'update', { userId: 12, lat: coords.latitude, lon: coords.longitude })
-      });
-
-      socket.on('chat', function(data){
-        console.log("chat", data);
-        $('#chat').append( $('<p>', {text: data.msg} ));
-      });
-    })
+  function addUser(){
+    socket.emit("update", {
+      userId: userMax,
+      userName:"Newbie",
+      lat: users[0].location[0].lat,
+      lon: users[0].location[0].lon
+    });
+  }
 
 
-  </script>
-
+</script>
 
 
 </body>

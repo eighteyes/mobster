@@ -3258,13 +3258,13 @@ input[type="button"].btn-block {
     .navbar {
       border-radius: 4px; } }
 
-.navbar-header:before, .navbar-mob .navbar-header:before, .navbar-header:after, .navbar-mob .navbar-header:after {
+.navbar-header:before, .navbar-header:after {
   content: " ";
   display: table; }
-.navbar-header:after, .navbar-mob .navbar-header:after {
+.navbar-header:after {
   clear: both; }
 @media (min-width: 768px) {
-  .navbar-header, .navbar-mob .navbar-header {
+  .navbar-header {
     float: left; } }
 
 .navbar-collapse {
@@ -5072,37 +5072,29 @@ button.disabled {
 
 body {
   background: #f0f0f0;
+  color: #282828;
   padding-top: 70px; }
 
-.navbar-mob {
-  background-color: rgba(255, 255, 255, 0);
+.navbar-ss {
+  background-color: #f0f0f0;
   border: none;
   font-weight: 200; }
-  .navbar-mob .navbar-brand {
-    color: black;
-    white-space: nowrap;
-    font-weight: 600; }
-    .navbar-mob .navbar-brand > img {
-      height: 47px;
-      display: inline; }
-  .navbar-mob .navbar-header {
-    float: none;
-    margin: -15 0;
-    min-width: 336px; }
-  .navbar-mob .navbar-toggle {
-    border: none;
-    float: right;
-    display: block !important; }
-    .navbar-mob .navbar-toggle.active {
-      background-color: transparent;
-      -webkit-transform: rotate(90deg);
-      -ms-transform: rotate(90deg);
-      transform: rotate(90deg);
-      -webkit-transition: all, 1s;
-      transition: all, 1s; }
-    .navbar-mob .navbar-toggle .icon-bar {
+  .navbar-ss .navbar-brand {
+    padding: 3px 15px;
+    color: black; }
+    .navbar-ss .navbar-brand img {
+      height: 50px; }
+  .navbar-ss .navbar-toggle {
+    border: none; }
+    .navbar-ss .navbar-toggle:hover, .navbar-ss .navbar-toggle:active, .navbar-ss .navbar-toggle:focus {
+      background-color: transparent; }
+    .navbar-ss .navbar-toggle .icon-bar {
       background-color: black;
       height: 4px; }
+  .navbar-ss .navbar-nav li a {
+    color: black; }
+    .navbar-ss .navbar-nav li a:hover, .navbar-ss .navbar-nav li a:focus, .navbar-ss .navbar-nav li a:active, .navbar-ss .navbar-nav li a .active {
+      font-weight: bold; }
 
 button.flash {
   font-size: 20px;
