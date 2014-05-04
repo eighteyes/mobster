@@ -25,13 +25,13 @@ navigator.geolocation.getCurrentPosition (data) =>
 
   @user = {
     userId: userId,
-    userName: "testUser",
-    lon: @coordinates.longitude - 2,
-    lat: @coordinates.latitude - 2
+    userName: "webUser",
+    lon: @coordinates.longitude,
+    lat: @coordinates.latitude
   }
-
+  console.log("user", @user)
   # Init
-  socket.emit('init', { userId: @user.userId, lat: @coordinates.latitude, lon: @coordinates.longitude })
+  socket.emit('init', @user)
 
 # Start Maps
 
@@ -120,8 +120,7 @@ $('#msg').keypress (e)->
       userName: 'webUser'
       msg: $('#msg').val()
     $('#msg').val('')
-#    if $('#chat p').length >= 4
-#      $('#chat p').first().remove()
+    $('#chat p').last().focus()
 
 socket.on 'chat', (data)->
   console.log("chat", data)

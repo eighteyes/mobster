@@ -16,15 +16,12 @@
       userId = 12;
       _this.user = {
         userId: userId,
-        userName: "testUser",
-        lon: _this.coordinates.longitude - 2,
-        lat: _this.coordinates.latitude - 2
+        userName: "webUser",
+        lon: _this.coordinates.longitude,
+        lat: _this.coordinates.latitude
       };
-      return socket.emit('init', {
-        userId: _this.user.userId,
-        lat: _this.coordinates.latitude,
-        lon: _this.coordinates.longitude
-      });
+      console.log("user", _this.user);
+      return socket.emit('init', _this.user);
     };
   })(this));
 
@@ -108,7 +105,8 @@
         userName: 'webUser',
         msg: $('#msg').val()
       });
-      return $('#msg').val('');
+      $('#msg').val('');
+      return $('#chat p').last().focus();
     }
   });
 
