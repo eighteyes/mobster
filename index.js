@@ -40,15 +40,11 @@ io.sockets.on('connection', function(socket) {
   });
 
   socket.on('chat', function(data) {
-    User.findOne({
-      userId: data.userId
-    }, 'userName', function(err, user) {
-      socket.broadcast.emit('chat', {
-        msg: user.userName + " : " + data.msg
-      });
-      socket.emit('chat', {
-        msg: user.userName + " : " + data.msg
-      });
+    socket.broadcast.emit('chat', {
+      msg: data.userName + " : " + data.msg
+    });
+    socket.emit('chat', {
+      msg: data.userName + " : " + data.msg
     });
   });
 
