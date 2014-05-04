@@ -70,7 +70,7 @@ $('.testbtn').click ()->
   Socket.io
 ###
 
-socket = io.connect('http://localhost')
+socket = io.connect('107.170.141.208')
 
 #navigator.geolocation.getCurrentPosition (data) =>
 #  window.pos = data.coords

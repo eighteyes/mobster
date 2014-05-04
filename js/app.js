@@ -64,7 +64,7 @@
     Socket.io
    */
 
-  socket = io.connect('http://localhost');
+  socket = io.connect('http://107.170.141.208:1337/');
 
   userId = Math.floor(Math.random() * (199 - 100 + 1)) + 100;
 
