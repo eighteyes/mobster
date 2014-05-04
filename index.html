@@ -20,6 +20,17 @@
         console.log('NewUser', data);
       })
 
+      var walk;
+
+
+      function stopWalk(){
+        window.clearInterval(walk);
+      }
+
+      function startWalk(){
+        walk = window.setInterval( randomWalk, 2500 );
+      }
+
       function randomWalk(){
         for ( i = 0; i < users.length; i++ ){
           var user = users[i];
@@ -32,6 +43,7 @@
             lon: user.location[0].lon
           });
         }
+        return "Walked";
       }
 
       function addUser(){

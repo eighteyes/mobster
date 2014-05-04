@@ -13,7 +13,7 @@ var locations = [];
 
 
 
-for (var i = 0; i <= 10; i++) {
+for (var i = 0; i <= 100; i++) {
   var location = new Location( randLoc() );
   location.save();
 
