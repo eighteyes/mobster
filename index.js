@@ -70,7 +70,7 @@ function updateUserLoc(data) {
     });
     loc.save(function(err, loc) {
       if (err) console.log(err);
-      user.location = [loc];
+      user.location = { lat: loc.lat, lon: loc.lon, time: loc.time };
       user.save( function(err, user) {
         if (newUser) socket.broadcast.emit('newUser', user);
       });
