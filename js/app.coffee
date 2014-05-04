@@ -48,8 +48,7 @@ map = {}
 
 $(document).ready => @googlemaps()
 
-$('.testbtn').click =>
-
+$('.testbtn').click ()->
   contentString =
     '<div id="content">'+'<div id="siteNotice">'+'</div>'+
     '<h1 id="firstHeading" class="firstHeading">Test Player</h1>'+
@@ -58,7 +57,7 @@ $('.testbtn').click =>
     '</div>'+'</div>'
   infowindow = new google.maps.InfoWindow(content: contentString)
   marker = new google.maps.Marker(
-    position: new google.maps.LatLng(@coordinates.latitude - 0.01, @coordinates.longitude - 0.01)
+    position: new google.maps.LatLng(coordinates.latitude - 0.01, coordinates.longitude - 0.01)
     animation: google.maps.Animation.DROP,
     map: map
     title: "Test Player"
@@ -73,15 +72,19 @@ $('.testbtn').click =>
 
 socket = io.connect('http://localhost')
 
+#navigator.geolocation.getCurrentPosition (data) =>
+#  window.pos = data.coords
+
 # New User
 
 userId = Math.floor(Math.random() * (199 - 100 + 1)) + 100
 
-user =
-  userId: userId
-  userName: "testUser"
-  lat: @coordinates.latitude
-  lon: @coordinates.longitude
+user = {
+  userId: userId,
+  userName: "testUser",
+  lon: coordinates.longitude - 2,
+  lat: coordinates.latitude - 2
+}
 
 socket.emit("update", user)
 
@@ -94,22 +97,55 @@ socket.on 'newUser', (data)->
     map: map
   )
 
-$('#msg').keydown (e)->
-  if e.which = 13
+# Send Msg
+$('#msg').keypress (e)->
+  if e.which == 13
     socket.emit 'chat',
       userId: user.userId
       msg: $('#msg').val()
-
-$('#update').on 'click',
-  (e)-> socket.emit( 'update', user)
 
 socket.on 'chat', (data)->
   console.log("chat", data)
   $('#chat').append($('<p>', {text: data.msg}))
 
-# Init
-socket.emit('init', { userId: user.userId, lat: @coordinates.latitude, lon: @coordinates.longitude })
+$('#update').click ()->
+  console.log(user)
+  socket.emit( 'update', user)
+  marker = new google.maps.Marker(
+    position: new google.maps.LatLng(coordinates.latitude - 0.01, coordinates.longitude - 0.01)
+    animation: google.maps.Animation.DROP,
+    map: map
+    title: "Test Player"
+  )
 
+# Update
+
+socket.on 'update', (data)->
+  console.log('update', data)
+  console.log data.lat, data.lon
+  marker = new google.maps.Marker(
+    position: new google.maps.LatLng(coordinates.latitude, coordinates.longitude)
+    animation: google.maps.Animation.DROP,
+    map: map
+  )
+
+
+# Init
+socket.emit('init', { userId: user.userId, lat: coordinates.latitude, lon: coordinates.longitude })
+
+i = 0
+socket.on 'init',
+  while i < users.length
+    users[i]
+    users[i].location[0].lat
+    users[i].location[0].lon
+    console.log users[i].location[0].lat, users[i].location[0].lon
+    latlng = new google.maps.LatLng(users[i].location[0].lat, users[i].location[0].lon)
+    users[i].userId = new google.maps.Marker(
+      position: latlng,
+      map: document.getElementById("map-canvas")
+    )
+    i++
 
 #Pusher.log = (message) ->
 #  window.console.log message  if window.console and window.console.log

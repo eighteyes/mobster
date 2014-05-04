@@ -5075,25 +5075,46 @@ body {
   color: #282828;
   padding-top: 70px; }
 
-.navbar-ss {
+.container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%; }
+
+.chat-container {
+  background: white;
+  position: absolute;
+  height: 25%;
+  width: 35%;
+  overflow-y: hidden;
+  /* bottom: 35px; */
+  -webkit-transform: translate(13%, 278%);
+  -ms-transform: translate(13%, 278%);
+  transform: translate(13%, 278%); }
+  .chat-container #chat {
+    height: 80%; }
+
+.navbar-mob {
   background-color: #f0f0f0;
   border: none;
   font-weight: 200; }
-  .navbar-ss .navbar-brand {
-    padding: 3px 15px;
+  .navbar-mob .navbar-brand {
     color: black; }
-    .navbar-ss .navbar-brand img {
+    .navbar-mob .navbar-brand img {
       height: 50px; }
-  .navbar-ss .navbar-toggle {
+  .navbar-mob .navbar-toggle {
+    display: block !important;
+    float: right;
     border: none; }
-    .navbar-ss .navbar-toggle:hover, .navbar-ss .navbar-toggle:active, .navbar-ss .navbar-toggle:focus {
+    .navbar-mob .navbar-toggle:hover, .navbar-mob .navbar-toggle:active, .navbar-mob .navbar-toggle:focus {
       background-color: transparent; }
-    .navbar-ss .navbar-toggle .icon-bar {
-      background-color: black;
+    .navbar-mob .navbar-toggle .icon-bar {
+      background: black;
       height: 4px; }
-  .navbar-ss .navbar-nav li a {
+  .navbar-mob .navbar-nav li a {
     color: black; }
-    .navbar-ss .navbar-nav li a:hover, .navbar-ss .navbar-nav li a:focus, .navbar-ss .navbar-nav li a:active, .navbar-ss .navbar-nav li a .active {
+    .navbar-mob .navbar-nav li a:hover, .navbar-mob .navbar-nav li a:focus, .navbar-mob .navbar-nav li a:active, .navbar-mob .navbar-nav li a .active {
       font-weight: bold; }
 
 button.flash {

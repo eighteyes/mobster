@@ -15,16 +15,34 @@ body
   color: rgb(40, 40, 40)
   padding-top: 70px
 
-.navbar-ss
+.container
+  position: absolute
+  bottom: 0
+  left: 0
+  height: 100vh
+  width: 100%
+
+.chat-container
+  background: white
+  position: absolute
+  height: 25%
+  width: 35%
+  overflow-y: hidden
+  /* bottom: 35px; */
+  @include translate(13%, 278%)
+  #chat
+    height: 80%
+.navbar-mob
   background-color: rgb(240, 240, 240)
   border: none
   font-weight: 200
   .navbar-brand
-    padding: 3px 15px
     color: #000000
     img
       height: 50px
   .navbar-toggle
+    display: block !important
+    float: right
     border: none
     &:hover, &:active, &:focus
       background-color: transparent
@@ -33,7 +51,7 @@ body
     //-webkit-transform: rotate(90deg)
     //-webkit-transition: all 1s
     .icon-bar
-      background-color: black
+      background: black
       height: 4px
 
   .navbar-nav

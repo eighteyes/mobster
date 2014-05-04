@@ -28,17 +28,22 @@
   </div>
 </nav>
 
+  <div id="map-canvas" style="width: 100%; height: 88vh;"></div>
 
   <div class="container">
 
-      <input id="msg" type="text" placeholder="msg">
-      <button type="button" id="update">Update yo</button>
+    <div class="chat-container img-rounded">
       <div id="chat">
       </div>
+      <div class="input-group">
+        <input id="msg" type="text" placeholder="msg" class="form-control">
+        <a class="btn btn-default input-group-addon">send</a>
+      </div>
+    </div>
 
-    <div class="row">
+    <div class=" hidden row">
       <div class="col-sm-12">
-        <button class="hidden btn btn-default btn-block test">Test Stuff</button>
+        <button class="btn btn-default btn-block test">Test Stuff</button>
         <button class="hidden btn btn-default btn-block event">Fire</button>
         <button class="btn-dfrag btn-block pingbtn">Resonance</button>
         <button class="btn-dfrag btn-block testbtn">Drop Marker</button>
@@ -46,7 +51,6 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <div id="map-canvas" style="width: 100%; height: 90vh;"></div>
       </div>
     </div>
   </div>
@@ -117,7 +121,9 @@
     console.log("walked", interval);
   }
 
+  var userMax = 1000;
   function addUser(){
+    userMax += 1;
     socket.emit("update", {
       userId: userMax,
       userName:"Newbie",
