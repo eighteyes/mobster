@@ -135,7 +135,8 @@ socket.on 'update', (data)->
 socket.emit('init', { userId: user.userId, lat: coordinates.latitude, lon: coordinates.longitude })
 
 i = 0
-socket.on 'init',
+socket.on 'init', (data)->
+  data = users
   while i < users.length
     users[i]
     users[i].location[0].lat
@@ -143,42 +144,35 @@ socket.on 'init',
     console.log users[i].location[0].lat, users[i].location[0].lon
     latlng = new google.maps.LatLng(users[i].location[0].lat, users[i].location[0].lon)
     users[i].userId = new google.maps.Marker(
-      position: latlng,
-      map: document.getElementById("map-canvas")
+      position: latlng
+      animation: google.maps.Animation.DROP
     )
+    users[i].userId.setMap(map)
     i++
 
-#Pusher.log = (message) ->
-#  window.console.log message  if window.console and window.console.log
-#
-#@pusher = new Pusher(@key, authEndpoint: "//immense-waters-5603.herokuapp.com/auth")
 
-#channel = pusher.subscribe("players")
-#channel.bind "my_event", (data) ->
-#  console.log data
-#  alert data.message
+## Push Menu
 
-#@channel = @pusher.subscribe("presence-geo")
-#
-#
-#@updateloc = -> channel.trigger('client-geo', coordinates)
-#
-#channel.bind "pusher:subscription_succeeded", ->
-#  console.log "Location Listening"
-#  updateloc()
-#
+$menuButton = $('.navbar-toggle')
+$menuLeft = $('.menu-left')
+$menuRight = $('.menu-right')
+$body = $('body')
+$el = $(this)
 
-#
-#$pingbtn = $('.pingbtn')
-#$pingbtn.click ->
-#  channel.trigger 'client-ping', ""
-#
-#channel.bind "client-ping", (data) ->
-#  updateloc()
+$menuButton.click ->
+  $el.toggleClass "active"
+  $body.toggleClass " menu-push-toleft"
+  $('#overlay').toggleClass "overlay"
+  $menuRight.toggleClass "menu-open"
 
-#
-#//@ sourceMappingURL=app.map
-#
+$('#overlay').click ->
+  $menuButton.removeClass "active"
+  $body.removeClass "menu-push-toleft"
+  $body.removeClass "menu-push-toright"
+  $menuRight.removeClass "menu-open"
+  $menuLeft.removeClass "menu-open"
+  $('#overlay').removeClass "overlay"
+  $('.navbar-toggle').removeClass('disabled')
 
 
 
