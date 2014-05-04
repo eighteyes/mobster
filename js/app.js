@@ -91,7 +91,7 @@
   $('#msg').keypress(function(e) {
     if (e.which === 13) {
       socket.emit('chat', {
-        userId: user.userId,
+        userName: user.userId,
         msg: $('#msg').val()
       });
       return $('#msg').val('');
