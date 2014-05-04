@@ -1,67 +1,77 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-  <link rel="stylesheet" href="css/style.sass"/>
-</head>
-<body>
-
-
-  <div class="container">
-
-    <input type="text"><button id="update">Update yo</button>
-    <div id="chat">
-    </div>
-
-    <div class="row">
-      <div class="col-sm-12">
-        <button class="hidden btn btn-default btn-block test">Test Stuff</button>
-        <button class="hidden btn btn-default btn-block event">Fire</button>
-        <button class="btn-dfrag btn-block pingbtn">Resonance</button>
-        <button class="btn-dfrag btn-block testbtn">Drop Marker</button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12">
-        <div id="map-canvas" style="width: 100%; height: 90vh;"></div>
-      </div>
-    </div>
-  </div>
-
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
-  <script type="text/javascript" src="js/md5.min.js"></script>
-  <script type="text/javascript" src="js/googlemaps.js?key=AIzaSyCwMPYWQv-RasZnNTRJJwrzMWHZWQpW4E0&sensor=true">
-  </script>
-  <script type="text/javascript" src="js/mapstyle.js"></script>
-  <script type="text/javascript" src="js/app.js"></script>
-  <script type="text/javascript" src="socket.io/socket.io.js"></script>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
   <script>
-    var socket = io.connect('http://localhost');
-    socket.on('init', function(data){
-      console.log('init -> ', data);
-    });
-    socket.on('update', function(data){
-      console.log('update -> ', data);
-    })
+      var users;
+      var socket = io.connect('107.170.141.208');
+      socket.on('init', function(data){
+        console.log(' init ', data)
+        users = data;
+      });
+      socket.on('update', function(data){
+        console.log('update -> ', data);
+      });
 
-    function randomWalk(){
-      for ( i = 0; i < users.length; i++ ){
-        var user = users[i];
-        user.location[0].lat += Math.random()/1000 - 0.0005;
-        user.location[0].lon += Math.random()/1000 - 0.0005;
-        users[i] = user;
-        socket.emit("update", {
-          userId: user.userId,
-          lat: user.location[0].lat,
-          lon: user.location[0].lon
-        });
+      socket.on('newUser', function(data){
+        console.log('NewUser', data);
+      })
+
+      var walk;
+
+
+      function stopWalk(){
+        window.clearInterval(walk);
       }
-    }
 
-    function addUser(){
-//      users;
-    }
+      function startWalk(){
+        walk = window.setInterval( randomWalk, 500 );
+      }
+
+      var interval = 0;
+      var userMax = 100;
+
+      function randomWalk(){
+
+        var num = Math.ceil(Math.random()*5);
+        for ( var i = interval; i < interval + num; i++ ){
+          var user = users[i];
+          user.location[0].lat += Math.random()/1000 - 0.0005;
+          user.location[0].lon += Math.random()/1000 - 0.0005;
+          users[i] = user;
+          // socket.emit("update", {
+          //   userId: user.userId,
+          //   lat: user.location[0].lat,
+          //   lon: user.location[0].lon
+          // });
+        }
+          userMax += 1;
+          socket.emit("update", {
+            userId: userMax,
+            userName:"Newbie",
+            lat: users[0].location[0].lat,
+            lon: users[0].location[0].lon
+          });
+
+        if (interval > 90){
+          interval = 0;
+        } else {
+          interval += num;
+        }
+        console.log("walked", interval);
+      }
+
+      function addUser(){
+
+      }
+
+
+    </script>
+
+  <script>
 
     navigator.geolocation.getCurrentPosition(positionSuccess);
 
@@ -76,27 +86,29 @@
 
 
 
-    $( function() {
-      $(document).on('keypress', function(e){
-        if (e.keyCode == 13){
-          socket.emit('chat', { userId: 12, msg: $('input:first').val() });
-        }
-      });
+      $( function() {
+        $(document).on('keypress', function(e){
+          if (e.keyCode == 13){
+            socket.emit('chat', { userId: 12, msg: $('input:first').val() });
+          }
+        });
 
-      $('#update').on('click', function(e){
-        socket.emit( 'update', { userId: 12, lat: coords.latitude, lon: coords.longitude })
-      });
+        $('#update').on('click', function(e){
+          socket.emit( 'update', { userId: 12, lat: coords.latitude, lon: coords.longitude })
+        });
 
-      socket.on('chat', function(data){
-        console.log("chat", data);
-        $('#chat').append( $('<p>', {text: data.msg} ));
-      });
-    })
+        socket.on('chat', function(data){
+          console.log("chat", data);
+          $('#chat').append( $('<p>', {text: data.msg} ));
+        });
+      })
+    </script>
+</head>
+<body>
 
-
-  </script>
-
-
+  <input type="text">
+  <button id="update">Update yo</button>
+  <div id="chat"></div>
 
 </body>
 </html>
