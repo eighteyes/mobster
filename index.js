@@ -71,9 +71,9 @@ function updateUserLoc(data) {
     loc.save(function(err, loc) {
       if (err) console.log(err);
       user.save( function(err) {
-        user.lat = loc.lat;
-        user.lon = loc.lon;
-        if (newUser) socket.broadcast.emit('newUser', user);
+        if (newUser) socket.broadcast.emit('newUser', {
+         userId: data.userId, userName: data.userName || "testUser",
+         lat: data.lat, lon: data.lon });
       });
     });
   });
