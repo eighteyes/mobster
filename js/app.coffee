@@ -101,7 +101,7 @@ socket.on 'newUser', (data)->
 $('#msg').keypress (e)->
   if e.which == 13
     socket.emit 'chat',
-      userId: user.userId
+      userName: 'webUser'
       msg: $('#msg').val()
     $('#msg').val('')
 
