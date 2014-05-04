@@ -67,6 +67,7 @@ function updateUserLoc(data) {
     loc.save(function(err, loc) {
       if (err) console.log(err);
       user.location = loc;
+      console.log('UserUpdate', user);
       user.save( function(err) {
         if (newUser) socket.broadcast.emit('newUser', {
          userId: data.userId, userName: data.userName || "testUser",

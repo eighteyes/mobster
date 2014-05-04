@@ -77,7 +77,7 @@ socket = io.connect('107.170.141.208')
 
 # New User
 
-userId = Math.floor(Math.random() * (199 - 100 + 1)) + 100
+userId = 12
 
 user = {
   userId: userId,
